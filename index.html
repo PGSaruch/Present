@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Checklist</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f7;
+      color: #111;
+    }
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+    .item.sub {
+      margin-left: 26px;
+      font-size: 15px;
+    }
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      flex: 0 0 auto;
+      accent-color: #111;
+    }
+    .done {
+      text-decoration: line-through;
+      opacity: .45;
+    }
+    .progress-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(245,245,247,.94);
+      backdrop-filter: blur(8px);
+      padding: 10px 0 14px;
+      margin-bottom: 8px;
+    }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+    .progress {
+      height: 8px;
+      background: #ddd;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: #111;
+      transition: width .2s ease;
+    }
+    .reset {
+      width: 100%;
+      margin-top: 6px;
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      background: #111;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>Sales Checklist</h1>
+
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span>Progress</span>
+        <span id="progressText">0%</span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+
+    <section class="card">
+      <div class="section-title">1. Key Person Confirm and Design Amount</div>
+      <label class="item"><input type="checkbox" data-id="1"><span>Key Person Confirm and Design Amount</span></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title">2. Introduce Product in Charge</div>
+      <label class="item"><input type="checkbox" data-id="2-1"><span>LMAC Benefit</span></label>
+      <label class="item"><input type="checkbox" data-id="2-2"><span>Conveyor Unit Benefit</span></label>
+      <label class="item"><input type="checkbox" data-id="2-3"><span>Conveyor Component Benefit</span></label>
+      <label class="item"><input type="checkbox" data-id="2-4"><span>Campaign เช่น Privilege</span></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title">3. Survey</div>
+      <label class="item"><input type="checkbox" data-id="3-1"><span>Current Projects เช่น Conveyor</span></label>
+      <label class="item"><input type="checkbox" data-id="3-2"><span>Current Solution &amp; Competitor</span></label>
+      <label class="item"><input type="checkbox" data-id="3-3"><span>Status Projects เช่น Concept Design</span></label>
+      <label class="item"><input type="checkbox" data-id="3-4"><span>Demand Value เช่น 50K Baht/Machine</span></label>
+      <label class="item"><input type="checkbox" data-id="3-5"><span>Application</span></label>
+      <label class="item sub"><input type="checkbox" data-id="3-5-1"><span>Belt เช่น เขียว</span></label>
+      <label class="item sub"><input type="checkbox" data-id="3-5-2"><span>ความกว้าง เช่น 200</span></label>
+      <label class="item sub"><input type="checkbox" data-id="3-5-3"><span>ยาว เช่น 1 m</span></label>
+      <label class="item sub"><input type="checkbox" data-id="3-5-4"><span>โหลด</span></label>
+      <label class="item sub"><input type="checkbox" data-id="3-5-5"><span>ความเร็ว</span></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title">4. CC (Confirm Solution &amp; Commit)</div>
+      <label class="item"><input type="checkbox" data-id="4"><span>CC (Confirm Solution &amp; Commit)</span></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title">5. Promotion</div>
+      <label class="item"><input type="checkbox" data-id="5-1"><span>Conveyor Component Promotion</span></label>
+      <label class="item"><input type="checkbox" data-id="5-2"><span>Other Part Component Promotion</span></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title">6. Q&amp;A Customer</div>
+      <label class="item"><input type="checkbox" data-id="6"><span>Q&amp;A Customer</span></label>
+    </section>
+
+    <button class="reset" id="resetBtn">Reset Checklist</button>
+  </main>
+
+  <script>
+    const boxes = [...document.querySelectorAll('input[type="checkbox"]')];
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+
+    function updateProgress() {
+      boxes.forEach(box => {
+        const text = box.parentElement.querySelector('span');
+        text.classList.toggle('done', box.checked);
+      });
+      const checked = boxes.filter(b => b.checked).length;
+      const percent = Math.round((checked / boxes.length) * 100);
+      progressText.textContent = percent + '%';
+      progressBar.style.width = percent + '%';
+    }
+
+    boxes.forEach(box => {
+      box.checked = localStorage.getItem('sales-check-' + box.dataset.id) === '1';
+      box.addEventListener('change', () => {
+        localStorage.setItem('sales-check-' + box.dataset.id, box.checked ? '1' : '0');
+        updateProgress();
+      });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      boxes.forEach(box => {
+        box.checked = false;
+        localStorage.removeItem('sales-check-' + box.dataset.id);
+      });
+      updateProgress();
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
